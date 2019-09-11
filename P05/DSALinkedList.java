@@ -166,7 +166,7 @@ public class DSALinkedList implements Iterable, Serializable
         }
     }
 
-    private class DSALinkedListIterator implements Iterator, Serializable
+    private class DSALinkedListIterator implements Iterator
     {
         private DSAListNode iterNext;
 
