@@ -10,7 +10,7 @@ public class BSTProgram
         boolean close = false;
         int typeChoice = 0;
         String fileName;
-        
+
         //bst.insert("4", "4 key");
         //bst.insert("2", "2 key");
         //bst.insert("6", "6 key");
@@ -43,7 +43,7 @@ public class BSTProgram
             System.out.println("4. Write CSV");
             System.out.println("5. Write a serialized File");
             System.out.println("6. Run Test");
-            menuChoice = sc.nextInt();        
+            menuChoice = sc.nextInt();
             //sc.next();
             switch(menuChoice)
             {
@@ -54,7 +54,7 @@ public class BSTProgram
                 case 1:
                     System.out.println("Please enter a filename");
                     fileName = sc.next();
-                    readFile(bst, fileName);       
+                    readFile(bst, fileName);
                     break;
                 case 2:
                     System.out.println("Please enter a filename");
@@ -67,7 +67,7 @@ public class BSTProgram
                     System.out.println("2. Preorder");
                     System.out.println("3. Postorder");
                     typeChoice = sc.nextInt();
-                    
+
                     switch(typeChoice)
                     {
                         case 1:
@@ -87,13 +87,13 @@ public class BSTProgram
                     System.out.println("Please enter a filename");
                     fileName = sc.next();
                     String output = "";
-                    
+
                     System.out.println("Please type in a display type");
                     System.out.println("1. Inorder");
                     System.out.println("2. Preorder");
                     System.out.println("3. Postorder");
                     typeChoice = sc.nextInt();
-                    
+
                     switch(typeChoice)
                     {
                         case 1:
@@ -113,7 +113,7 @@ public class BSTProgram
                 case 5:
                     System.out.println("Please enter a filename");
                     fileName = sc.next();
-                    save(bst, fileName);    
+                    save(bst, fileName);
                     break;
                 case 6:
                     System.out.println("Testing find. Should print 3 key");
@@ -225,7 +225,7 @@ public class BSTProgram
         {
             id = tokens[0];
             value = tokens[1];
-            bst.insert(id, value);       
+            bst.insert(id, value);
         }
         catch(Exception e)
         {
@@ -244,7 +244,7 @@ public class BSTProgram
             pw = new PrintWriter(fileStrm);
 
             pw.println(output);
-            
+
             pw.close();
         }
         catch (IOException e)

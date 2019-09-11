@@ -116,8 +116,28 @@ public class DSAGraph
 
     public boolean isAdjacent(String label1, String label2)
     {
+        Iterator iter = vertices.iterator();
         boolean boolAdj = false;
-        DSAGraphVertex
+        DSALinkedList vertex1 = null;
+        DSALinkedList vertex2 = null
+
+        vertex1 = getVertex(label1);
+        vertex2 = getVertex(label2);
+
+        if(hasVertex(label))
+        {
+            while (iter.hasNext())
+            {
+                if(((iter.next()).getLabel).equals(label1))
+                {
+                    vertex = iter.next();
+                }
+            }
+        }
+        else
+        {
+            throw new IllegalArgumentException("Label not Found");
+        }
 
         return boolAdj;
     }
