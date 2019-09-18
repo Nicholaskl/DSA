@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class DSAGraph
 {
     private DSALinkedList vertices;
@@ -7,34 +9,61 @@ public class DSAGraph
         vertices = new DSALinkedList();
     }
 
-    public void addVertex(String label, Object value)
+    public void addVertex(String label)
     {
-        vertices.addLast(label, value);
+        DSAGraphVertex newVertex;
+        newVertex = new DSAGraphVertex(label);
+        vertices.insertLast(newVertex);
     }
 
     public void addEdge(String label1, String label2)
     {
-        Iterator iter = vertices.iterator();
-        DSAGraphVertex temp1, temp2;
+        DSAGraphVertex curr = null;
 
-        while (iter.hasNext())
+        if((hasVertex(label1) == false) || (hasVertex(label2) == false))
         {
-            if(((iter.next()).getLabel).equals(label1))
+            if ((hasVertex(label1) == false) && (hasVertex(label2) == true))
             {
-                temp1 = iter.next();
+                addVertex(label1);
             }
-            else if (((iter.next()).getLabel).equals(label2))
+            else if ((hasVertex(label1) == true) && (hasVertex(label2) == false))
             {
-                temp2 = iter.next();
-            }
-
-            if((temp1 != null) && (temp2 != null))
-            {
-
+                addVertex(label2);
             }
             else
             {
-                System.out.println("Vertices not found");
+                addVertex(label1);
+                addVertex(label2);
+            }
+
+            Iterator iter = vertices.iterator();
+            while (iter.hasNext())
+            {
+                curr = (DSAGraphVertex)iter.next();
+                if((curr.getLabel()).equals(label1))
+                {
+                    curr.addEdge(label2);
+                }
+                else if ((curr.getLabel()).equals(label2))
+                {
+                    curr.addEdge(label1);
+                }
+            }
+        }
+        else
+        {
+            Iterator iter = vertices.iterator();
+            while (iter.hasNext())
+            {
+                curr = (DSAGraphVertex)iter.next();
+                if((curr.getLabel()).equals(label1))
+                {
+                    curr.addEdge(label2);
+                }
+                else if ((curr.getLabel()).equals(label2))
+                {
+                    curr.addEdge(label1);
+                }
             }
         }
     }
@@ -43,16 +72,18 @@ public class DSAGraph
     {
         boolean vertexB = false;
         Iterator iter = vertices.iterator();
+        DSAGraphVertex curr;
 
         if(vertices.isEmpty())
         {
-            throw new IllegalArgumentException("No vertices found")
+            vertexB = false;
         }
         else
         {
             while (iter.hasNext())
             {
-                if(iter.next().equals(label))
+                curr = (DSAGraphVertex)iter.next();
+                if((curr.getLabel()).equals(label))
                 {
                     vertexB = true;
                 }
@@ -82,18 +113,20 @@ public class DSAGraph
         return vCount;
     }
 
-    public DSAGraphVertex getVertex(label)
+    public DSAGraphVertex getVertex(String label)
     {
-        DSAGraphVertex vertex = null;
         Iterator iter = vertices.iterator();
+        DSAGraphVertex curr;
+        DSAGraphVertex vertex = null;
 
         if(hasVertex(label))
         {
             while (iter.hasNext())
             {
-                if(((iter.next()).getLabel).equals(label1))
+                curr = (DSAGraphVertex)iter.next();
+                if((curr.getLabel()).equals(label))
                 {
-                    vertex = iter.next();
+                    vertex = curr;
                 }
             }
         }
@@ -107,8 +140,7 @@ public class DSAGraph
 
     public DSALinkedList getAdjacent(String label)
     {
-        DSAGraphVertex vertex;
-
+        DSAGraphVertex vertex = null;
         vertex = getVertex(label);
 
         return vertex.getAdjacent();
@@ -118,19 +150,20 @@ public class DSAGraph
     {
         Iterator iter = vertices.iterator();
         boolean boolAdj = false;
-        DSALinkedList vertex1 = null;
-        DSALinkedList vertex2 = null
+        DSAGraphVertex vertex1, vertex2, vertex;
+        Object curr;
 
         vertex1 = getVertex(label1);
         vertex2 = getVertex(label2);
 
-        if(hasVertex(label))
+        if((hasVertex(label1)) && (hasVertex(label2)))
         {
             while (iter.hasNext())
             {
-                if(((iter.next()).getLabel).equals(label1))
+                curr = iter.next();
+                if(curr.equals(label1))
                 {
-                    vertex = iter.next();
+                    vertex = (DSAGraphVertex)iter.next();
                 }
             }
         }
@@ -142,17 +175,90 @@ public class DSAGraph
         return boolAdj;
     }
 
+    public void displayAsList()
+    {
+        Iterator iter = vertices.iterator();
+        DSAGraphVertex curr, currll;
+        DSALinkedList ll = null;
+
+        while (iter.hasNext())
+        {
+            curr = (DSAGraphVertex)iter.next();
+
+            System.out.print(curr.getLabel() + " | ");
+
+            ll = getAdjacent(curr.getLabel());
+            Iterator iterll = ll.iterator();
+            while (iterll.hasNext())
+            {
+                System.out.print(iterll.next());
+            }
+            System.out.print("\n");
+        }
+    }
+
+    public void displayAsMatrix()
+    {
+        Iterator iter = vertices.iterator();
+        Iterator iter2 = vertices.iterator();
+        DSAGraphVertex curr, curr2;
+        DSALinkedList ll;
+        String currLabel;
+        Boolean isMatrix;
+
+        System.out.print(" ");
+        while (iter.hasNext())
+        {
+            curr = (DSAGraphVertex)iter.next();
+
+            System.out.print(" " + curr.getLabel());
+        }
+        System.out.print("\n");
+
+        iter = vertices.iterator();
+        while (iter.hasNext())
+        {
+            curr = (DSAGraphVertex)iter.next();
+            System.out.print(curr.getLabel() + " ");
+
+            iter2 = vertices.iterator();
+            while (iter2.hasNext())
+            {
+                isMatrix = false;
+                curr2 = (DSAGraphVertex)iter2.next();
+
+                ll = getAdjacent(curr.getLabel());
+                Iterator iterll = ll.iterator();
+                while (iterll.hasNext())
+                {
+                    currLabel = (String)iterll.next();
+                    if((curr2.getLabel()).equals(currLabel))
+                    {
+                        isMatrix = true;
+                    }
+                }
+                if (isMatrix == true)
+                {
+                    System.out.print("1 ");
+                }
+                else
+                {
+                    System.out.print("0 ");
+                }
+            }
+            System.out.print("\n");
+        }
+    }
+
     private class DSAGraphVertex
     {
         private String label;
-        private Object value;
         private DSALinkedList links;
         private boolean visited;
 
-        public void DSAGraphVertex(String inLabel, Object inValue)
+        public DSAGraphVertex(String inLabel)
         {
             label = inLabel;
-            value = inValue;
             links = new DSALinkedList();
             visited = false;
         }
@@ -162,17 +268,12 @@ public class DSAGraph
             return label;
         }
 
-        public Object getValue()
-        {
-            return value;
-        }
-
         public DSALinkedList getAdjacent()
         {
             DSALinkedList linksTemp = null;
             if(links.isEmpty())
             {
-                throw new IllegalArgumentException("No Adjacent vertices")
+                throw new IllegalArgumentException("No Adjacent vertices");
             }
             else
             {
@@ -181,9 +282,9 @@ public class DSAGraph
             return linksTemp;
         }
 
-        public void addEdge(DSAGraphVertex vertex)
+        public void addEdge(String vertexLabel)
         {
-            links.addLast(vertex);
+            links.insertLast(vertexLabel);
         }
 
         public void setVisited()

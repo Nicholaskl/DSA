@@ -1,0 +1,78 @@
+import java.util.*;
+import java.io.*;
+
+public class test
+{
+    public static void main(String[] args)
+    {
+        DSAGraph gr = new DSAGraph();
+        String fileName = "";
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Please enter file name:");
+        fileName = sc.next();
+
+        readFile(gr, fileName);
+
+        gr.displayAsList();
+        gr.displayAsMatrix();
+    }
+
+    private static void readFile(DSAGraph gr, String inFilename)
+    {
+        FileInputStream fileStrm = null;
+        InputStreamReader rdr;
+        BufferedReader bufRdr;
+        int lineNum;
+        String line;
+        int[] array2 = new int[7005];
+
+        try
+        {
+            fileStrm = new FileInputStream(inFilename);
+            rdr = new InputStreamReader(fileStrm);
+            bufRdr = new BufferedReader(rdr);
+
+            lineNum = 0;
+            line = bufRdr.readLine();
+            while (line != null && !(line.equals("")))
+            {
+                processLine(gr, line);
+                lineNum++;
+                line = bufRdr.readLine();
+            }
+            fileStrm.close();
+        }
+        catch(IOException e)
+        {
+            if(fileStrm != null)
+            {
+                try
+                {
+                    fileStrm.close();
+                }
+                catch(IOException ex2)
+                {
+                }
+            }
+            System.out.println("Error in file processing: " + e.getMessage());
+        }
+    }
+
+    private static void processLine(DSAGraph gr, String csvRow) throws IllegalStateException
+    {
+        String label1, label2;
+
+        String[] tokens = csvRow.split(" ");
+        try
+        {
+            label1 = (String)tokens[0];
+            label2 = (String)tokens[1];
+            gr.addEdge(label1, label2);
+        }
+        catch(Exception e)
+        {
+            throw new IllegalStateException("CSV row had invalid format");
+        }
+    }
+}
