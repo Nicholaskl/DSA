@@ -140,7 +140,7 @@ public class test
         String[] tokens = csvRow.split(",");
         try
         {
-            key = (String)tokens[0];
+            key = tokens[0];
             value = tokens[1];
             ht.put(key, value);
         }
