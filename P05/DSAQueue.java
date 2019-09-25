@@ -16,7 +16,7 @@ public class DSAQueue implements Iterable
 
     public boolean isEmpty()
     {
-        return (list.peekFirst()==null);
+        return (list.isEmpty());
     }
 
     public void enqueue(Object value)

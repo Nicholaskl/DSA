@@ -20,13 +20,13 @@ public class DSAGraph
     {
         DSAGraphVertex curr = null;
 
-        if((hasVertex(label1) == false) || (hasVertex(label2) == false))
+        if((!hasVertex(label1)) || (!hasVertex(label2)))
         {
-            if ((hasVertex(label1) == false) && (hasVertex(label2) == true))
+            if ((!hasVertex(label1)) && (hasVertex(label2)))
             {
                 addVertex(label1);
             }
-            else if ((hasVertex(label1) == true) && (hasVertex(label2) == false))
+            else if ((hasVertex(label1)) && (!hasVertex(label2)))
             {
                 addVertex(label2);
             }
@@ -58,11 +58,17 @@ public class DSAGraph
                 curr = (DSAGraphVertex)iter.next();
                 if((curr.getLabel()).equals(label1))
                 {
-                    curr.addEdge(label2);
+                    if(!isAdjacent(label1, label2))
+                    {
+                            curr.addEdge(label2);
+                    }
                 }
                 else if ((curr.getLabel()).equals(label2))
                 {
-                    curr.addEdge(label1);
+                    if(!isAdjacent(label2, label1))
+                    {
+                            curr.addEdge(label1);
+                    }
                 }
             }
         }
@@ -148,22 +154,23 @@ public class DSAGraph
 
     public boolean isAdjacent(String label1, String label2)
     {
-        Iterator iter = vertices.iterator();
         boolean boolAdj = false;
-        DSAGraphVertex vertex1, vertex2, vertex;
-        Object curr;
-
-        vertex1 = getVertex(label1);
-        vertex2 = getVertex(label2);
+        DSAGraphVertex vertex;
+        String currAdj;
+        DSALinkedList adjL;
 
         if((hasVertex(label1)) && (hasVertex(label2)))
         {
+            vertex = getVertex(label1);
+            adjL = vertex.getAdjacent();
+
+            Iterator iter = adjL.iterator();
             while (iter.hasNext())
             {
-                curr = iter.next();
-                if(curr.equals(label1))
+                currAdj = (String)iter.next();
+                if(currAdj.equals(label2))
                 {
-                    vertex = (DSAGraphVertex)iter.next();
+                    boolAdj = true;
                 }
             }
         }
@@ -175,8 +182,55 @@ public class DSAGraph
         return boolAdj;
     }
 
+    public void sortGraph()
+    {
+        Iterator iter = vertices.iterator();
+        DSAGraphVertex curr, currSorted, sortedFirst, sortedLast;
+        DSALinkedList sortedList = new DSALinkedList();
+        DSALinkedList tempList = new DSALinkedList();
+
+        while (iter.hasNext())
+        {
+            curr = (DSAGraphVertex)iter.next();
+
+            if(sortedList.isEmpty())
+            {
+                sortedList.insertFirst(curr);
+            }
+            else
+            {
+                sortedFirst = (DSAGraphVertex)sortedList.peekFirst();
+                sortedLast = (DSAGraphVertex)sortedList.peekLast();
+
+                if ((curr.getLabel()).compareTo(sortedLast.getLabel()) > 0)
+                {
+                    sortedList.insertLast(curr);
+                }
+                else if (((curr.getLabel()).compareTo(sortedFirst.getLabel()) < 0))
+                {
+                    sortedList.insertFirst(curr);
+                }
+                else
+                {
+                    while ((curr.getLabel()).compareTo(sortedLast.getLabel()) < 0)
+                    {
+                        tempList.insertFirst(sortedList.removeLast());
+                        sortedLast = (DSAGraphVertex)sortedList.peekLast();
+                    }
+                    sortedList.insertLast(curr);
+                    while(!tempList.isEmpty())
+                    {
+                        sortedList.insertLast(tempList.removeFirst());
+                    }
+                }
+            }
+        }
+        vertices = sortedList;
+    }
+
     public void displayAsList()
     {
+        sortGraph();
         Iterator iter = vertices.iterator();
         DSAGraphVertex curr, currll;
         DSALinkedList ll = null;
@@ -199,6 +253,7 @@ public class DSAGraph
 
     public void displayAsMatrix()
     {
+        sortGraph();
         Iterator iter = vertices.iterator();
         Iterator iter2 = vertices.iterator();
         DSAGraphVertex curr, curr2;
@@ -250,6 +305,97 @@ public class DSAGraph
         }
     }
 
+    public void depthFirstSearch()
+    {
+        sortGraph();
+        DSAGraphVertex curr;
+        DSAStack stack = new DSAStack();
+
+        Iterator iter = vertices.iterator();
+        while (iter.hasNext())
+        {
+            curr = (DSAGraphVertex)iter.next();
+            curr.clearVisited();
+        }
+
+        curr = (DSAGraphVertex)vertices.peekFirst();
+        curr.setVisited();
+        stack.push(curr);
+        depthFirstSearchRec(stack);
+        System.out.print("\n");
+    }
+
+    public void depthFirstSearchRec(DSAStack stack)
+    {
+        DSALinkedList adjacent;
+        DSAGraphVertex currAdj;
+        DSAGraphVertex v = (DSAGraphVertex)stack.top();
+        v.setVisited();
+
+        adjacent = v.getAdjacent();
+        Iterator iterAdj = adjacent.iterator();
+        while (iterAdj.hasNext())
+        {
+            currAdj = getVertex((String)iterAdj.next());
+            if(!currAdj.getVisited())
+            {
+                System.out.print("(" + v.getLabel() + "," + currAdj.getLabel() + ") ");
+                stack.push(currAdj);
+                depthFirstSearchRec(stack);
+            }
+        }
+        stack.pop();
+    }
+
+    public void breadthFirstSearch()
+    {
+        sortGraph();
+        DSAGraphVertex curr;
+        DSAQueue queue = new DSAQueue();
+
+        Iterator iter = vertices.iterator();
+        while (iter.hasNext())
+        {
+            curr = (DSAGraphVertex)iter.next();
+            curr.clearVisited();
+        }
+
+        curr = (DSAGraphVertex)vertices.peekFirst();
+        curr.setVisited();
+        queue.enqueue(curr);
+        breadthFirstSearchRec(queue);
+        System.out.print("\n");
+    }
+
+    public void breadthFirstSearchRec(DSAQueue queue)
+    {
+        DSALinkedList adjacent;
+        DSAGraphVertex currAdj;
+        DSAGraphVertex v;
+
+        if(!queue.isEmpty())
+        {
+            v = (DSAGraphVertex)queue.peek();
+            v.setVisited();
+
+            adjacent = v.getAdjacent();
+            Iterator iterAdj = adjacent.iterator();
+            while (iterAdj.hasNext())
+            {
+                currAdj = getVertex((String)iterAdj.next());
+
+                if(!currAdj.getVisited())
+                {
+                    queue.enqueue(currAdj);
+                    System.out.print("(" + v.getLabel() + "," + currAdj.getLabel() + ") ");
+                    currAdj.setVisited();
+                }
+            }
+            queue.dequeue();
+            breadthFirstSearchRec(queue);
+        }
+    }
+
     private class DSAGraphVertex
     {
         private String label;
@@ -270,6 +416,7 @@ public class DSAGraph
 
         public DSALinkedList getAdjacent()
         {
+            sortAdjacency();
             DSALinkedList linksTemp = null;
             if(links.isEmpty())
             {
@@ -313,6 +460,52 @@ public class DSAGraph
             }
 
             return str;
+        }
+
+        public void sortAdjacency()
+        {
+            Iterator iter = links.iterator();
+            String curr, currSorted, sortedFirst, sortedLast;
+            DSALinkedList sortedList = new DSALinkedList();
+            DSALinkedList tempList = new DSALinkedList();
+
+            while (iter.hasNext())
+            {
+                curr = (String)iter.next();
+
+                if(sortedList.isEmpty())
+                {
+                    sortedList.insertFirst(curr);
+                }
+                else
+                {
+                    sortedFirst = (String)sortedList.peekFirst();
+                    sortedLast = (String)sortedList.peekLast();
+
+                    if ((curr).compareTo(sortedLast) > 0)
+                    {
+                        sortedList.insertLast(curr);
+                    }
+                    else if (((curr).compareTo(sortedFirst) < 0))
+                    {
+                        sortedList.insertFirst(curr);
+                    }
+                    else
+                    {
+                        while ((curr).compareTo(sortedLast) < 0)
+                        {
+                            tempList.insertFirst(sortedList.removeLast());
+                            sortedLast = (String)sortedList.peekLast();
+                        }
+                        sortedList.insertLast(curr);
+                        while(!tempList.isEmpty())
+                        {
+                            sortedList.insertLast(tempList.removeFirst());
+                        }
+                    }
+                }
+            }
+            links = sortedList;
         }
     }
 }

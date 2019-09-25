@@ -8,6 +8,7 @@ public class test
         DSAHashTable ht = new DSAHashTable(3);
         Scanner sc = new Scanner(System.in);
         int menu = 0;
+        String output = "";
 
         System.out.println("1: Enter Custom Test Harness");
         System.out.println("2: Enter RandomNames File");
@@ -20,7 +21,8 @@ public class test
                 break;
             case 2:
                 readFile(ht, "RandomNames7000.csv");
-                System.out.println("done");
+                output = ht.output();
+                writeOneRow("output.csv", output);
                 break;
             default:
                 System.out.println("Error in choice given");
@@ -44,6 +46,7 @@ public class test
         String sixthVal = "8";
         String seventhVal = "26";
 
+        ht.put(firstVal, 2);
         System.out.println("-----Add Test-----");
         ht.put(firstVal, 1);
         curr = ht.get(firstVal);
@@ -139,12 +142,41 @@ public class test
         {
             key = (String)tokens[0];
             value = tokens[1];
-            System.out.println(key + " , " + value);
             ht.put(key, value);
         }
         catch(Exception e)
         {
             throw new IllegalStateException("CSV row had invalid format");
+        }
+    }
+
+    private static void writeOneRow(String filename, String output)
+    {
+        FileOutputStream fileStrm = null;
+        PrintWriter pw;
+
+        try
+        {
+            fileStrm = new FileOutputStream(filename);
+            pw = new PrintWriter(fileStrm);
+
+            pw.println(output);
+
+            pw.close();
+        }
+        catch (IOException e)
+        {
+            if(fileStrm != null)
+            {
+                try
+                {
+                    fileStrm.close();
+                }
+                catch(IOException ex2)
+                {
+                }
+            }
+            System.out.println("Error in writing to file: " + e.getMessage());
         }
     }
 }
