@@ -5,24 +5,29 @@ public class test
 {
     public static void main(String[] args)
     {
-        DSAHeap hp = new DSAHeap(3);
+        DSAHeap hp = new DSAHeap(12);
 
-        int priority1 = 5;
-        int priority2 = 2;
-        int priority3 = 4;
+        int[] priority = {82, 70, 51, 63, 55, 37, 10, 42, 27, 30, 34, 95};
+
 
         String value1 = "1";
         String value2 = "2";
         String value3 = "3";
 
-        hp.add(priority1, value1);
-        hp.add(priority2, value2);
-        hp.add(priority3, value3);
-        hp.export();
+        for(int ii=0; ii < priority.length; ii++)
+        {
+            hp.add(priority[ii], Integer.toString(ii+1));
+        }
 
-        //hp.print(hp.remove());
-        //hp.print(hp.remove());
-        //hp.print(hp.remove());
+        hp.export();
+        System.out.println("-----ADDED");
+
+        hp.print(hp.remove());
+        System.out.println("-----should be 1");
+        hp.print(hp.remove());
+        System.out.println("-----should be 3");
+        hp.print(hp.remove());
+        System.out.println("-----should be 2");
+        hp.export();
     }
 }
-

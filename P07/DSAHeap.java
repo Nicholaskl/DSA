@@ -19,15 +19,30 @@ public class DSAHeap
     public void add(int priority, Object value)
     {
         DSAHeapEntry curr;
+        curr = new DSAHeapEntry(priority, value);
+        Boolean stop = false;
+        int ii = 0;
 
-        for(int ii=0; ii < heap.length; ii++)
+        if(heap[0].value == null)
         {
-            if((heap[ii].value == null) && (heap[ii].value == null))
+            heap[0] = curr;
+        }
+        else
+        {
+            do
             {
-                curr = new DSAHeapEntry(priority, value);
-                heap[ii+1] = curr;
-                trickleUp(ii+1);
+                if(heap[ii].value == null)
+                {
+                    heap[ii] = curr;
+                    trickleUp(ii);
+                    stop = true;
+                }
+                else
+                {
+                    ii += 1;
+                }
             }
+            while(stop != true);
         }
         count += 1;
     }
@@ -49,6 +64,7 @@ public class DSAHeap
         {
             throw new IllegalArgumentException("Heap empty. Nothing to remove");
         }
+        count += -1;
         return export;
     }
 
@@ -84,7 +100,7 @@ public class DSAHeap
     {
         int lChildIdx, rChildIdx, largeIdx;
         DSAHeapEntry temp;
-    
+
         lChildIdx = curIdx * 2 + 1;
         rChildIdx = lChildIdx + 1;
 
@@ -138,6 +154,6 @@ public class DSAHeap
         {
             priority = inPriority;
             value = inValue;
-        }   
+        }
     }
 }
