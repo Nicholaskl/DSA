@@ -8,14 +8,14 @@ public class test
         DSAGraph gr = new DSAGraph();
         String fileName = "";
         Scanner sc = new Scanner(System.in);
+        DSALinkedList ll;
 
-        System.out.println("Please enter file name:");
-        fileName = sc.next();
-
-        readFile(gr, fileName);
+        readFile(gr, "prac6_2.al");
 
         gr.displayAsList();
         gr.displayAsMatrix();
+        gr.depthFirstSearch();
+        gr.breadthFirstSearch();
     }
 
     private static void readFile(DSAGraph gr, String inFilename)

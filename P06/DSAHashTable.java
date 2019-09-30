@@ -42,7 +42,7 @@ public class DSAHashTable
             {
                 while(!entered)
                 {
-                    if(hashArray[index].state == 1)
+                    if((hashArray[index].state == 1) && !((hashArray[index].key).equals(inKey)))
                     {
                         index = (index + stepHash(inKey)) % hashArray.length;
                     }
@@ -53,10 +53,6 @@ public class DSAHashTable
                         count += 1;
                     }
                 }
-            }
-            else
-            {
-                throw new IllegalArgumentException("Not enough space!");
             }
         }
     }
@@ -96,6 +92,27 @@ public class DSAHashTable
         retValue = hashArray[hashIdx].value;
 
         return retValue;
+    }
+
+    public String output()
+    {
+        String outputStr = "";
+        DSAHashEntry curr;
+        DSALinkedList output;
+
+        output = export();
+
+        Iterator iter = output.iterator();
+        while (iter.hasNext())
+        {
+            curr = (DSAHashEntry)iter.next();
+            if (curr.state == 1)
+            {
+                outputStr += curr.key + "," + curr.value + "\n";
+            }
+        }
+
+        return outputStr;
     }
 
     public void remove(String inKey)
@@ -190,7 +207,7 @@ public class DSAHashTable
 
         for(int ii=0; ii < key.length(); ii++)
         {
-            hashIdx = (31 * hashIdx) + key.charAt(ii);
+            hashIdx = (33 * hashIdx) + key.charAt(ii);
         }
         return Math.abs(hashIdx) % hashArray.length;
     }
@@ -275,7 +292,7 @@ public class DSAHashTable
         {
             String export = "";
 
-            export = key + value;
+            export = key + "," + value;
 
             return export;
         }
