@@ -51,14 +51,14 @@ public class DSAHeap
     {
         DSAHeapEntry export, empty;
 
-        if(count != 0)
+        if(count > 0)
         {
             empty = new DSAHeapEntry();
 
             export = heap[0];
             heap[0] = heap[count-1];
             heap[count-1] = empty;
-            trickleDown(0);
+            trickleDown(0, heap.length);
         }
         else
         {
@@ -91,9 +91,9 @@ public class DSAHeap
         }
     }
 
-    private void trickleDown(int sortIdx)
+    private void trickleDown(int sortIdx, int numItems)
     {
-        trickleDownRec(sortIdx, count);
+        trickleDownRec(sortIdx, numItems);
     }
 
     private void trickleDownRec(int curIdx, int numItems)
@@ -137,6 +137,45 @@ public class DSAHeap
             System.out.println("Priority: " + heap[ii].priority);
             System.out.println("Value: " + heap[ii].value);
         }
+    }
+
+    private void heapify()
+    {
+        for(int ii = (heap.length/2)-1; ii >= 0; ii--)
+        {
+            trickleDown(ii, heap.length);
+        }
+    }
+
+    public int[] heapSort(Object[] array)
+    {
+        int[] returnArr = new int[array.length];
+        DSAHeapEntry curr = null;
+
+        heap = new DSAHeapEntry[array.length];
+        for (int ii = 0; ii < heap.length; ii++)
+        {
+            curr = new DSAHeapEntry((int)array[ii], " ");
+            heap[ii] = curr;
+        }
+
+        heapify();
+
+        for(int ii = array.length-1; ii >= 1; ii--)
+        {
+            curr = heap[ii];
+            heap[ii] = heap[0];
+            heap[0] = curr;
+            trickleDown(0, ii);
+        }
+
+
+        for (int ii = 0;ii < array.length ; ii++)
+        {
+            returnArr[ii] = heap[ii].priority;
+        }
+
+        return returnArr;
     }
 
     private class DSAHeapEntry
