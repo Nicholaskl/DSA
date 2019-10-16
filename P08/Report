@@ -1,0 +1,56 @@
+-----BUBBLE SORT-----
+Ascending: 23.33
+Descending: 3112.0
+Random Order: 943.33
+random w/ Dup: 7627.67
+Nearly Sorted: 719.0
+
+-----Insertion SORT-----
+Ascending: 32.66
+Descending: 3059.67
+Random Order: 1386.33
+random w/ Dup: 2140.0
+Nearly Sorted: 36.0
+
+-----Selection SORT-----
+Ascending: 2646.33
+Descending: 612.67
+Random Order: 1751.67
+random w/ Dup: 4755.0
+Nearly Sorted: 261.0
+
+-----Quicksort SORT-----
+Ascending: 2150.67
+Descending: 3021.0
+Random Order: 62.67
+random w/ Dup: 103.67
+Nearly Sorted: 55.67
+
+-----Median3 Quicksort SORT-----
+Ascending: 2809.0
+Descending: 1651.0
+Random Order: 66.33
+random w/ Dup: 101.3
+Nearly Sorted: 37.33
+
+-----3 way quicksort SORT-----
+BROKEN!!!!!!!!!!!!!!!!!!
+
+-----Merge SORT-----
+Ascending: 129.33
+Descending: 1715.0
+Random Order: 815.33
+random w/ Dup: 1287.0
+Nearly Sorted: 85.67
+
+
+
+
+WINNERS
+ascending: bubble
+descending: selection
+random order: quicksort
+random w/ dup: Median3
+Nearly Sorted: Insertion
+
+The merge sort came across with the best new ascending data, however fell behind the quicksorts in regards to the other categories. Both quicksorts suffered with ascending (already sorted) however excelled in random order and nearly sorted data. The median3 was faster than quiskort at descneding, nearly sorted and random duplicates however fell begind in ascending and regular random order.

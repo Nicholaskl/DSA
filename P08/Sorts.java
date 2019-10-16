@@ -2,6 +2,7 @@
 ** Software Technology 152
 ** Class to hold various static sort methods.
 */
+
 class Sorts
 {
     // bubble sort
@@ -74,7 +75,7 @@ class Sorts
     public static int[] mergeSort(int[] A)
     {
         A = mergeSortRecurse(A, 0, A.length-1);
-        return A; 
+        return A;
     }//mergeSort()
     private static int[] mergeSortRecurse(int[] A, int leftIdx, int rightIdx)
     {
@@ -87,7 +88,7 @@ class Sorts
             mergeSortRecurse(A, leftIdx, midIdx);
             mergeSortRecurse(A, midIdx+1, rightIdx);
 
-            merge(A, leftIdx, midIdx, rightIdx);            
+            merge(A, leftIdx, midIdx, rightIdx);
         }
         return A;
     }//mergeSortRecurse()
@@ -112,18 +113,18 @@ class Sorts
             }
             kk++;
         }
-        for(ii = ii; ii < midIdx; ii++)
+        for(ii = ii; ii <= midIdx; ii++)
         {
             tempArr[kk] = A[ii];
             kk++;
         }
-        for(jj = jj; jj < rightIdx; jj++)
+        for(jj = jj; jj <= rightIdx; jj++)
         {
             tempArr[kk] = A[jj];
             kk++;
         }
-    
-        for(kk = leftIdx; kk < rightIdx; kk++)
+
+        for(kk = leftIdx; kk <= rightIdx; kk++)
         {
             A[kk] = tempArr[kk-leftIdx];
         }
@@ -139,7 +140,7 @@ class Sorts
     private static int[] quickSortM3Recurse(int[] A, int leftIdx, int rightIdx)
     {
         int pivotIdx, newPivotIdx;
-        
+
         if(rightIdx > leftIdx)
         {
             pivotIdx = (leftIdx+rightIdx)/2;
@@ -159,7 +160,7 @@ class Sorts
     private static int[] quickSortRecurse(int[] A, int leftIdx, int rightIdx)
     {
         int pivotIdx, newPivotIdx;
-        
+
         if(rightIdx > leftIdx)
         {
             pivotIdx = leftIdx;
@@ -173,7 +174,7 @@ class Sorts
     private static int doPartitioning(int[] A, int leftIdx, int rightIdx, int pivotIdx)
     {
         int newPivotIdx, pivotVal, currIdx, temp;
-        
+
         pivotVal = A[pivotIdx];
         A[pivotIdx] = A[rightIdx];
         A[rightIdx] = pivotVal;
@@ -196,5 +197,68 @@ class Sorts
 		return newPivotIdx;	// TEMP - Replace this when you implement QuickSort
     }//doPartitioning
 
+    public  static int[] quickSort3Way(int[] A)
+    {
+        A = quickSort3WayRec(A, 0, A.length-1);
+        return A;
+    }
+
+    private static int[] quickSort3WayRec(int[] A, int leftIdx, int rightIdx)
+    {
+        int pivots[] = new int[2];
+
+        if(leftIdx < rightIdx)
+        {
+            pivots = partition(A, leftIdx, rightIdx, pivots);
+            quickSort3WayRec(A, leftIdx, pivots[0]);
+            quickSort3WayRec(A, pivots[1], rightIdx);
+
+        }
+        return A;
+    }
+
+    private static int[] partition(int[] A, int leftIdx, int rightIdx, int[] pivots)
+    {
+        int temp;
+
+        if(rightIdx - leftIdx <= 1)
+        {
+            if(A[rightIdx] < A[leftIdx])
+            {
+                temp = A[leftIdx];
+                A[leftIdx] = A[rightIdx];
+                A[rightIdx] = temp;
+            }
+            pivots[0] = leftIdx;
+            pivots[1] = rightIdx;
+        }
+        else
+        {
+            int mid = leftIdx;
+            int pivot = A[rightIdx];
+            while(mid <= rightIdx)
+            {
+                if(A[mid]<pivot)
+                {
+                    temp  = A[mid++];
+                    A[mid++] = A[leftIdx++];
+                    A[leftIdx++] = temp;
+                }
+                else if(A[mid]==pivot)
+                {
+                    mid++;
+                }
+                else if(A[mid] > pivot)
+                {
+                    temp = A[rightIdx--];
+                    A[rightIdx--] = A[mid];
+                    A[mid] = temp;
+                }
+                pivots[0] = leftIdx-1;
+                pivots[1] = mid;
+            }
+        }
+        return pivots;
+    }
 
 }//end Sorts calss
