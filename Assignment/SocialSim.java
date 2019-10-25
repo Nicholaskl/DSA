@@ -4,12 +4,17 @@ public class SocialSim
 {
     public static void main(String[] args)
     {
-        Scanner sc = new Scanner(System.in);
-
-
-    }
-
-    public static void loadNetwork(String fileName)
-    {
+        if(args.length < 1)
+        {
+            System.out.println("Wrong Usuage! Please use -i for interactive Mode and -s for Simulation mode");
+        }
+        else
+        {
+            if(args[0].equals("-i"))
+            {
+                InteractiveMode intMode = new InteractiveMode();
+                intMode.menu();
+            }
+        }
     }
 }

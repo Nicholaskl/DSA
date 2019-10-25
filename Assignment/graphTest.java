@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class test
+public class graphTest
 {
     public static void main(String[] args)
     {
@@ -66,8 +66,16 @@ public class test
         String[] tokens = csvRow.split(" ");
         try
         {
-            label1 = (String)tokens[0];
-            label2 = (String)tokens[1];
+            label1 = tokens[0];
+            label2 = tokens[1];
+            if(!gr.hasVertex(label1))
+            {
+                gr.addVertex(label1, null);
+            }
+            if(!gr.hasVertex(label2))
+            {
+                gr.addVertex(label2, null);
+            }
             gr.addEdge(label1, label2);
         }
         catch(Exception e)

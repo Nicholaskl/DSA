@@ -9,69 +9,37 @@ public class DSAGraph
         vertices = new DSALinkedList();
     }
 
-    public void addVertex(String label)
+    public void addVertex(String label, Object value)
     {
         DSAGraphVertex newVertex;
-        newVertex = new DSAGraphVertex(label);
-        vertices.insertLast(newVertex);
+        if(!hasVertex(label))
+        {
+            newVertex = new DSAGraphVertex(label, value);
+            vertices.insertLast(newVertex);
+        }
     }
 
     public void addEdge(String label1, String label2)
     {
         DSAGraphVertex curr = null;
 
-        if((!hasVertex(label1)) || (!hasVertex(label2)))
+        if(hasVertex(label1) && hasVertex(label2))
         {
-            if ((!hasVertex(label1)) && (hasVertex(label2)))
-            {
-                addVertex(label1);
-            }
-            else if ((hasVertex(label1)) && (!hasVertex(label2)))
-            {
-                addVertex(label2);
-            }
-            else
-            {
-                addVertex(label1);
-                addVertex(label2);
-            }
-
-            Iterator iter = vertices.iterator();
-            while (iter.hasNext())
-            {
-                curr = (DSAGraphVertex)iter.next();
-                if((curr.getLabel()).equals(label1))
-                {
-                    curr.addEdge(label2);
-                }
-                else if ((curr.getLabel()).equals(label2))
-                {
-                    curr.addEdge(label1);
-                }
-            }
+                        Iterator iter = vertices.iterator();
+                        while (iter.hasNext())
+                        {
+                            curr = (DSAGraphVertex)iter.next();
+                            if((curr.getLabel()).equals(label1))
+                            {
+                                curr.addEdge(label2);
+                            }
+                        }
         }
         else
         {
-            Iterator iter = vertices.iterator();
-            while (iter.hasNext())
-            {
-                curr = (DSAGraphVertex)iter.next();
-                if((curr.getLabel()).equals(label1))
-                {
-                    if(!isAdjacent(label1, label2))
-                    {
-                            curr.addEdge(label2);
-                    }
-                }
-                else if ((curr.getLabel()).equals(label2))
-                {
-                    if(!isAdjacent(label2, label1))
-                    {
-                            curr.addEdge(label1);
-                    }
-                }
-            }
+            throw new IllegalArgumentException("Vertex(es) not found!");
         }
+
     }
 
     public boolean hasVertex(String label)
@@ -239,13 +207,16 @@ public class DSAGraph
         {
             curr = (DSAGraphVertex)iter.next();
 
-            System.out.print(curr.getLabel() + " | ");
+            System.out.print(curr.getLabel() + "| ");
 
             ll = getAdjacent(curr.getLabel());
-            Iterator iterll = ll.iterator();
-            while (iterll.hasNext())
+            if(!ll.isEmpty())
             {
-                System.out.print(iterll.next());
+                Iterator iterll = ll.iterator();
+                while (iterll.hasNext())
+                {
+                    System.out.print(iterll.next() + " ");
+                }
             }
             System.out.print("\n");
         }
@@ -401,12 +372,14 @@ public class DSAGraph
         private String label;
         private DSALinkedList links;
         private boolean visited;
+        private Object value;
 
-        public DSAGraphVertex(String inLabel)
+        public DSAGraphVertex(String inLabel, Object inValue)
         {
             label = inLabel;
             links = new DSALinkedList();
             visited = false;
+            value = inValue;
         }
 
         public String getLabel()
@@ -414,15 +387,16 @@ public class DSAGraph
             return label;
         }
 
+        public Object getValue()
+        {
+            return value;
+        }
+
         public DSALinkedList getAdjacent()
         {
             sortAdjacency();
-            DSALinkedList linksTemp = null;
-            if(links.isEmpty())
-            {
-                throw new IllegalArgumentException("No Adjacent vertices");
-            }
-            else
+            DSALinkedList linksTemp = new DSALinkedList();
+            if(!links.isEmpty())
             {
                 linksTemp = links;
             }

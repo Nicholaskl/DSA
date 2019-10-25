@@ -1,29 +1,45 @@
+import java.util.*;
+
 public class FollowNetwork
 {
-    DSALinkedList users;    
+    private DSAGraph users;
 
     public FollowNetwork()
     {
-        DSALinkedList users = new DSALinkedList(); 
+        users = new DSAGraph();
     }
 
-    public void newUser(String name)
+    public void addUser(String name)
     {
-        UserData user = new UserData();
+        UserData userData = new UserData(name);
 
-        userFollowers.addVertex(name);
-        users.insertLast(userFollowers);
+        users.addVertex(name, userData);
+    }
+
+    public void addFollow(String following, String follower)
+    {
+        users.addEdge(following, follower);
+    }
+
+    public boolean hasUser(String name)
+    {
+        return users.hasVertex(name);
+    }
+
+    public void displayNetworkList()
+    {
+        users.displayAsList();
     }
 
     private class UserData
     {
         String name;
-        DSAGraph followers;
         DSALinkedList posts;
-        
-        public UserData()
+
+        public UserData(String inName)
         {
-            a
+            name = inName;
+            posts = new DSALinkedList();
         }
     }
 }
