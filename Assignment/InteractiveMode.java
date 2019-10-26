@@ -72,7 +72,7 @@ public class InteractiveMode
                     System.out.println("Probability of a like: " + likeProb);
                     System.out.println("Probability of a follow: " + followProb);
                 break;
-                case 9 : network.printPost(); break;
+                case 9 : saveFile(); break;
                 case 10 : inOrder(); break;
                 default : System.out.println("Invalid menu option");
             }
@@ -235,6 +235,17 @@ public class InteractiveMode
         } while(close != true);
     }
 
+    public void saveFile()
+    {
+        Scanner sc = new Scanner(System.in);
+        String fileName;
+
+        System.out.println("Please enter a file name to export to");
+        fileName = sc.next();
+
+        writeFile(fileName, network.outputFile());
+    }
+
     private static void readFile(FollowNetwork network, String inFilename)
     {
         FileInputStream fileStrm = null;
@@ -301,6 +312,36 @@ public class InteractiveMode
         catch(Exception e)
         {
             throw new IllegalStateException("CSV row had invalid format");
+        }
+    }
+
+    private static void writeFile(String filename, String output)
+    {
+        FileOutputStream fileStrm = null;
+        PrintWriter pw;
+
+        try
+        {
+            fileStrm = new FileOutputStream(filename);
+            pw = new PrintWriter(fileStrm);
+
+            pw.println(output);
+
+            pw.close();
+        }
+        catch (IOException e)
+        {
+            if(fileStrm != null)
+            {
+                try
+                {
+                    fileStrm.close();
+                }
+                catch(IOException ex2)
+                {
+                }
+            }
+            System.out.println("Error in writing to file: " + e.getMessage());
         }
     }
 }

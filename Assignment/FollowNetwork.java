@@ -247,7 +247,7 @@ public class FollowNetwork
             while (iter.hasNext())
             {
                 currP = (PostClass)iter.next();
-                System.out.println("\t" + currP.likeNum + " likes from " + currP.poster + ", msg: " + currP.post);
+                System.out.println("  " + currP.likeNum + " likes|" + currP.poster + "|" + currP.post);
             }
         }
     }
