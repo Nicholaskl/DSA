@@ -21,6 +21,11 @@ public class FollowNetwork
         users.addEdge(following, follower);
     }
 
+    public void removeFollow(String following, String follower)
+    {
+        users.removeEdge(following, follower);
+    }
+
     public boolean hasUser(String name)
     {
         return users.hasVertex(name);

@@ -110,6 +110,13 @@ public class InteractiveMode
         Scanner sc = new Scanner(System.in);
         int choice = -1;
         boolean close = false;
+        String follower = "";
+        String following = "";
+
+        System.out.println("Please enter the follower");
+        follower = sc.next();
+        System.out.println("Please enter who they are following or want to follow");
+        following = sc.next();
 
         do
         {
@@ -117,17 +124,16 @@ public class InteractiveMode
             System.out.println("Please choose an option");
             System.out.println("------------------------------");
             System.out.println("0. Exit");
-            System.out.println("1. Remove a Follow");
-            System.out.println("2. Add a Follow");
+            System.out.println("1. Add a Follow");
+            System.out.println("2. Remove a Follow");
             System.out.println("------------------------------");
             choice = sc.nextInt();
 
             switch (choice)
             {
                 case 0 : close=true; break;
-                case 1 : network.hasUser(name); break;
-                case 2 : network.addUser(name); break;
-                case 3 : network.removeUser(name); break;
+                case 1 : network.addFollow(following, follower); break;
+                case 2 : network.removeFollow(following, follower); break;
                 default : System.out.println("Invalid menu option");
             }
 
