@@ -2,6 +2,10 @@ import java.util.*;
 
 public class DSAGraph
 {
+    public static final String GRN = "\033[1;32m";
+    public static final String CLR = "\033[0m";
+    public static final String ERRCLR = "\033[1;31m";
+
     private DSALinkedList vertices;
 
     public DSAGraph()
@@ -23,6 +27,10 @@ public class DSAGraph
     {
         DSAGraphVertex curr = null;
 
+        if(isAdjacent(label1, label2))
+        {
+            System.out.println(label2 + " is already following " + label1);
+        }
         if(hasVertex(label1) && hasVertex(label2))
         {
             Iterator iter = vertices.iterator();
@@ -40,6 +48,43 @@ public class DSAGraph
             throw new IllegalArgumentException("Vertex(es) not found!");
         }
 
+    }
+
+    public void setNodeValue(String label, Object value)
+    {
+        DSAGraphVertex curr = null;
+
+        Iterator iter = vertices.iterator();
+        while (iter.hasNext())
+        {
+            curr = (DSAGraphVertex)iter.next();
+            if((curr.getLabel()).equals(label))
+            {
+                curr.setValue(value);
+            }
+        }
+    }
+
+    public Object getNodeValue(String label)
+    {
+        DSAGraphVertex curr = null;
+        Object value = null;
+
+        Iterator iter = vertices.iterator();
+        while (iter.hasNext())
+        {
+            curr = (DSAGraphVertex)iter.next();
+            if((curr.getLabel()).equals(label))
+            {
+                value = curr.value;
+            }
+        }
+        if (value == null)
+        {
+            System.out.println(ERRCLR + "Node not found" + CLR);
+        }
+
+        return value;
     }
 
     public void deleteNode(String label)
@@ -71,6 +116,35 @@ public class DSAGraph
             {
                 ll.remove(find(label));
                 System.out.println("o");
+            }
+        }
+    }
+
+    public void removeEdge(String follower, String following)
+    {
+        int ii;
+        DSALinkedList ll;
+        DSAGraphVertex curr, currll;
+        String currLabel;
+
+        Iterator iter = vertices.iterator();
+        while(iter.hasNext())
+        {
+            curr = (DSAGraphVertex)iter.next();
+            if(curr.label.equals(follower))
+            {
+                ll = getAdjacent(curr.getLabel());
+                Iterator iterll = ll.iterator();
+                ii = -1;
+                while (iterll.hasNext())
+                {
+                    ii++;
+                    currLabel = (String)iterll.next();
+                    if((currLabel).equals(following))
+                    {
+                        ll.remove(ii);
+                    }
+                }
             }
         }
     }
@@ -262,7 +336,7 @@ public class DSAGraph
         {
             curr = (DSAGraphVertex)iter.next();
 
-            System.out.print(curr.getLabel() + "| ");
+            System.out.print(GRN + curr.getLabel() + CLR + "| ");
 
             ll = getAdjacent(curr.getLabel());
             if(!ll.isEmpty())
@@ -466,6 +540,11 @@ public class DSAGraph
         public void setVisited()
         {
             visited = true;
+        }
+
+        public void setValue(Object inValue)
+        {
+            value = inValue;
         }
 
         public void clearVisited()

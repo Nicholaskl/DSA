@@ -36,6 +36,17 @@ public class FollowNetwork
         users.deleteNode(name);
     }
 
+    public void addPost(String name, String post)
+    {
+        UserData user = null;
+        user = (UserData)users.getNodeValue(name);
+        if(user != null)
+        {
+            user.addPost(post);
+            users.setNodeValue(name, user);
+        }
+    }
+
     public void displayNetworkList()
     {
         users.displayAsList();
@@ -50,6 +61,11 @@ public class FollowNetwork
         {
             name = inName;
             posts = new DSALinkedList();
+        }
+
+        public void addPost(String post)
+        {
+            posts.insertLast(post);
         }
     }
 }
