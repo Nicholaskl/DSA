@@ -34,7 +34,7 @@ public class DSAGraph
         if(hasVertex(label1) && hasVertex(label2))
         {
             Iterator iter = vertices.iterator();
-            while (iter.hasNext())follower
+            while (iter.hasNext())
             {
                 curr = (DSAGraphVertex)iter.next();
                 if((curr.getLabel()).equals(label1))
@@ -323,6 +323,28 @@ public class DSAGraph
             }
         }
         vertices = sortedList;
+    }
+
+    public DSALinkedList getVertices()
+    {
+        DSALinkedList vertexList = new DSALinkedList();
+        DSAGraphVertex curr;
+
+        if(vertices.isEmpty())
+        {
+            System.out.println("Empty list, can't get vertices");
+        }
+        else
+        {
+            Iterator iter = vertices.iterator();
+            while (iter.hasNext())
+            {
+                curr = (DSAGraphVertex)iter.next();
+                vertexList.insertLast(curr.getValue());
+            }
+        }
+
+        return vertexList;
     }
 
     public void displayAsList()

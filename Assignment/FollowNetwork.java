@@ -16,6 +16,29 @@ public class FollowNetwork
         users.addVertex(name, userData);
     }
 
+    public void printPost()
+    {
+        DSALinkedList userList = users.getVertices();
+        DSALinkedList posts;
+        Iterator iter = userList.iterator();
+        Iterator iterP;
+        UserData curr;
+        PostClass currPost;
+
+        while (iter.hasNext())
+        {
+            curr = (UserData)iter.next();
+            System.out.println("uname:" + curr.name);
+            posts = curr.posts;
+            iterP = posts.iterator();
+            while (iter.hasNext())
+            {
+                currPost = (PostClass)iter.next();
+                System.out.println("post:" + currPost.post);
+            }
+        }
+    }
+
     public void addFollow(String following, String follower)
     {
         UserData user = null;
@@ -79,11 +102,168 @@ public class FollowNetwork
         }
     }
 
+    public void orderByFollower()
+    {
+        DSALinkedList userList = users.getVertices();
+        DSALinkedList sortedList = new DSALinkedList();
+        DSALinkedList tempList = new DSALinkedList();
+        UserData curr, sortedFirst, sortedLast;
+        Iterator iter = userList.iterator();
+
+        while (iter.hasNext())
+        {
+            curr = (UserData)iter.next();
+
+            if(sortedList.isEmpty())
+            {
+                sortedList.insertFirst(curr);
+            }
+            else
+            {
+                sortedFirst = (UserData)sortedList.peekFirst();
+                sortedLast = (UserData)sortedList.peekLast();
+
+                if ((users.getAdjacent(curr.name).getCount()) > (users.getAdjacent(sortedLast.name).getCount()))
+                {
+                    sortedList.insertLast(curr);
+                }
+                else if ((users.getAdjacent(curr.name).getCount()) < (users.getAdjacent(sortedFirst.name).getCount()))
+                {
+                    sortedList.insertFirst(curr);
+                }
+                else
+                {
+                    while ((users.getAdjacent(curr.name).getCount()) < (users.getAdjacent(sortedLast.name).getCount()))
+                    {
+                        tempList.insertFirst(sortedList.removeLast());
+                        sortedLast = (UserData)sortedList.peekLast();
+                    }
+                    sortedList.insertLast(curr);
+                    while(!tempList.isEmpty())
+                    {
+                        sortedList.insertLast(tempList.removeFirst());
+                    }
+                }
+            }
+        }
+
+        userList = new DSALinkedList();
+        iter = sortedList.iterator();
+        while (iter.hasNext())
+        {
+            curr = (UserData)iter.next();
+            userList.insertFirst(curr);
+        }
+
+        System.out.println();
+        System.out.println("------------------------------");
+        iter = userList.iterator();
+        while (iter.hasNext())
+        {
+            curr = (UserData)iter.next();
+            System.out.println("\t" + users.getAdjacent(curr.name).getCount() + " followers: " + curr.name);
+        }
+    }
+
+    public void orderByLike()
+    {
+        DSALinkedList userList = users.getVertices();
+        DSALinkedList postlist =  new DSALinkedList();
+        DSALinkedList usersPosts =  new DSALinkedList();
+        DSALinkedList sortedList = new DSALinkedList();
+        DSALinkedList tempList = new DSALinkedList();
+        PostClass currP, sortedFirst, sortedLast;
+        UserData curr;
+        Iterator iter = userList.iterator();
+        Iterator postIt;
+
+        while (iter.hasNext())
+        {
+            curr = (UserData)iter.next();
+            usersPosts = curr.posts;
+            postIt = usersPosts.iterator();
+            while (postIt.hasNext())
+            {
+                currP = (PostClass)postIt.next();
+                postlist.insertLast(currP);
+            }
+        }
+
+        if(postlist.isEmpty())
+        {
+            System.out.println("No Posts");
+        }
+        else
+        {
+            iter = postlist.iterator();
+            while (iter.hasNext())
+            {
+                currP = (PostClass)iter.next();
+
+                if(sortedList.isEmpty())
+                {
+                    sortedList.insertFirst(currP);
+                }
+                else
+                {
+                    sortedFirst = (PostClass)sortedList.peekFirst();
+                    sortedLast = (PostClass)sortedList.peekLast();
+
+                    if ((currP.likeNum) > (sortedLast.likeNum))
+                    {
+                        sortedList.insertLast(currP);
+                    }
+                    else if ((currP.likeNum) < (sortedFirst.likeNum))
+                    {
+                        sortedList.insertFirst(currP);
+                    }
+                    else
+                    {
+                        while ((currP.likeNum) < (sortedLast.likeNum))
+                        {
+                            tempList.insertFirst(sortedList.removeLast());
+                            sortedLast = (PostClass)sortedList.peekLast();
+                        }
+                        sortedList.insertLast(currP);
+                        while(!tempList.isEmpty())
+                        {
+                            sortedList.insertLast(tempList.removeFirst());
+                        }
+                    }
+                }
+            }
+
+            postlist = new DSALinkedList();
+            iter = sortedList.iterator();
+            while (iter.hasNext())
+            {
+                currP = (PostClass)iter.next();
+                postlist.insertFirst(currP);
+            }
+
+            System.out.println();
+            System.out.println("------------------------------");
+            iter = postlist.iterator();
+            while (iter.hasNext())
+            {
+                currP = (PostClass)iter.next();
+                System.out.println("\t" + currP.likeNum + " likes from " + currP.poster + ", msg: " + currP.post);
+            }
+        }
+    }
+
     private class UserData
     {
         private String name;
         private DSALinkedList following;
         private DSALinkedList posts;
+
+        public UserData()
+        {
+            name = "";
+            following = new DSALinkedList();
+            posts = new DSALinkedList();
+        }
 
         public UserData(String inName)
         {
@@ -94,25 +274,27 @@ public class FollowNetwork
 
         public void addFollowing(String name)
         {
-            posts.insertLast(name);
+            following.insertLast(name);
         }
 
-        public void addPost(String post)
+        public void addPost(String inPost)
         {
+            PostClass post = new PostClass(inPost, name);
             posts.insertLast(post);
         }
     }
 
-    private class Post
+    private class PostClass
     {
         private String post;
+        private String poster;
         private int likeNum;
 
-        public Post(String inPost)
+        public PostClass(String inPost, String inPoster)
         {
             post = inPost;
+            poster = inPoster;
             likeNum = 0;
         }
-
     }
 }

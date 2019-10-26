@@ -72,6 +72,7 @@ public class InteractiveMode
                     System.out.println("Probability of a like: " + likeProb);
                     System.out.println("Probability of a follow: " + followProb);
                 break;
+                case 9 : network.printPost(); break;
                 case 10 : inOrder(); break;
                 default : System.out.println("Invalid menu option");
             }
@@ -179,8 +180,7 @@ public class InteractiveMode
 
         do
         {
-            System.out.println();
-            System.out.println("Please choose an option");
+            System.out.println("\nPlease choose an option");
             System.out.println("------------------------------");
             System.out.println("0. Exit");
             System.out.println("1. Make a post");
@@ -190,10 +190,11 @@ public class InteractiveMode
             if(choice == 1)
             {
                 System.out.println();
+                sc.nextLine();
                 System.out.println("Please enter the User to make post");
-                user = sc.next();
+                user = sc.nextLine();
                 System.out.println("Please enter the post");
-                post = sc.next();
+                post = sc.nextLine();
             }
 
             switch (choice)
@@ -211,8 +212,6 @@ public class InteractiveMode
         Scanner sc = new Scanner(System.in);
         int choice = -1;
         boolean close = false;
-        String user = "";
-        String post = "";
 
         do
         {
@@ -228,8 +227,8 @@ public class InteractiveMode
             switch (choice)
             {
                 case 0 : close=true; break;
-                case 1 : network.addPost(user, post); break;
-                case 2 : network.addPost(user, post); break;
+                case 1 : network.orderByLike(); break;
+                case 2 : network.orderByFollower(); break;
                 default : System.out.println(ERRCLR + "Invalid menu option" + CLR);
             }
 
