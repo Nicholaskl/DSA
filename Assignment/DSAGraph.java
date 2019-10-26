@@ -25,21 +25,76 @@ public class DSAGraph
 
         if(hasVertex(label1) && hasVertex(label2))
         {
-                        Iterator iter = vertices.iterator();
-                        while (iter.hasNext())
-                        {
-                            curr = (DSAGraphVertex)iter.next();
-                            if((curr.getLabel()).equals(label1))
-                            {
-                                curr.addEdge(label2);
-                            }
-                        }
+            Iterator iter = vertices.iterator();
+            while (iter.hasNext())
+            {
+                curr = (DSAGraphVertex)iter.next();
+                if((curr.getLabel()).equals(label1))
+                {
+                    curr.addEdge(label2);
+                }
+            }
         }
         else
         {
             throw new IllegalArgumentException("Vertex(es) not found!");
         }
 
+    }
+
+    public void deleteNode(String label)
+    {
+        int ii;
+        DSALinkedList ll;
+        DSAGraphVertex curr, currll;
+        String currLabel;
+
+        vertices.remove(find(label));
+
+        Iterator iter = vertices.iterator();
+        while(iter.hasNext())
+        {
+            curr = (DSAGraphVertex)iter.next();
+            ll = getAdjacent(curr.getLabel());
+            Iterator iterll = ll.iterator();
+            ii = -1;
+            while (iterll.hasNext())
+            {
+                ii++;
+                currLabel = (String)iterll.next();
+                if((currLabel).equals(label))
+                {
+                    ll.remove(ii);
+                }
+            }
+            if(find(label) >= 0)
+            {
+                ll.remove(find(label));
+                System.out.println("o");
+            }
+        }
+    }
+
+    public int find(String label)
+    {
+        int idxCount = -1;
+        boolean idxFound = false;
+        DSAGraphVertex curr;
+
+        if(hasVertex(label))
+        {
+            Iterator iter = vertices.iterator();
+            while(iter.hasNext() && idxFound != true)
+            {
+                idxCount++;
+                curr = (DSAGraphVertex)iter.next();
+                if((curr.getLabel()).equals(label))
+                {
+                    idxFound = true;
+                }
+            }
+        }
+        return idxCount;
     }
 
     public boolean hasVertex(String label)

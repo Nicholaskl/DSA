@@ -26,6 +26,11 @@ public class FollowNetwork
         return users.hasVertex(name);
     }
 
+    public void removeUser(String name)
+    {
+        users.deleteNode(name);
+    }
+
     public void displayNetworkList()
     {
         users.displayAsList();

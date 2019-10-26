@@ -5,11 +5,13 @@ public class DSALinkedList implements Iterable, Serializable
 {
     protected DSAListNode head;
     protected DSAListNode tail;
+    private int count;
 
     public DSALinkedList()
     {
         head = null;
         tail = null;
+        count = 0;
     }
 
     public void insertFirst(Object newValue)
@@ -26,6 +28,7 @@ public class DSALinkedList implements Iterable, Serializable
             newNd.setNext(head);
             head = newNd;
         }
+        count++;
     }
 
     public void insertLast(Object newValue)
@@ -42,6 +45,7 @@ public class DSALinkedList implements Iterable, Serializable
             tail.setNext(newNd);
             tail = newNd;
         }
+        count++;
     }
 
     public boolean isEmpty()
@@ -89,12 +93,14 @@ public class DSALinkedList implements Iterable, Serializable
             nodeValue = head.getValue();
             head = null;
             tail = null;
+            count--;
         }
         else
         {
             nodeValue = head.getValue();
             head = head.getNext();
             head.setPrev(null);
+            count--;
         }
         return nodeValue;
     }
@@ -112,8 +118,54 @@ public class DSALinkedList implements Iterable, Serializable
             nodeValue = tail.getValue();
             tail = tail.getPrev();
             tail.setNext(null);
+            count--;
         }
         return nodeValue;
+    }
+
+    public void remove(int idx)
+    {
+        DSAListNode currNd;
+        DSAListNode prevNd = null;
+        DSAListNode nextNd = null;
+
+        if(isEmpty())
+        {
+            throw new IllegalArgumentException("Can't remove from empty list");
+        }
+        else if(idx == 0)
+        {
+            removeFirst();
+        }
+        else if(idx == count-1)
+        {
+            removeLast();
+        }
+        else
+        {
+            currNd = head;
+
+            for(int ii = 0; ii < idx; ii++)
+            {
+                currNd = currNd.next;
+            }
+
+            if(currNd.prev != null)
+            {
+                prevNd = currNd.prev;
+            }
+
+            if(currNd.next != null)
+            {
+                nextNd = currNd.next;
+            }
+
+            prevNd.setNext(nextNd);
+            nextNd.setPrev(prevNd);
+            currNd.next = null;
+            currNd.prev = null;
+            count--;
+        }
     }
 
     public Iterator iterator()

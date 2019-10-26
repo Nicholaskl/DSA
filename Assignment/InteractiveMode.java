@@ -59,14 +59,79 @@ public class InteractiveMode
 
                     followProb = temp;
                 break;
+                case 3 : nodeOperations(); break;
+                case 4 : followAdd(); break;
                 case 6 : network.displayNetworkList(); break;
                 case 7 :
                     System.out.println("Probability of a like: " + likeProb);
                     System.out.println("Probability of a follow: " + followProb);
                 break;
-                default : System.out.println("Invalid menu option"); break;
+                default : System.out.println("Invalid menu option");
             }
         } while (exit != true);
+    }
+
+    public void nodeOperations()
+    {
+        Scanner sc = new Scanner(System.in);
+        int choice = -1;
+        String name = "";
+        boolean close = false;
+
+        System.out.println("Please enter a name");
+        name = sc.next();
+
+        do
+        {
+            System.out.println();
+            System.out.println("Please choose an option");
+            System.out.println("------------------------------");
+            System.out.println("0. Exit");
+            System.out.println("1. Find User");
+            System.out.println("2. Insert User");
+            System.out.println("3. Delete User");
+            System.out.println("------------------------------");
+            choice = sc.nextInt();
+
+            switch (choice)
+            {
+                case 0 : close=true; break;
+                case 1 : network.hasUser(name); break;
+                case 2 : network.addUser(name); break;
+                case 3 : network.removeUser(name); break;
+                default : System.out.println("Invalid menu option");
+            }
+
+        } while(close != true);
+    }
+
+    public void followAdd()
+    {
+        Scanner sc = new Scanner(System.in);
+        int choice = -1;
+        boolean close = false;
+
+        do
+        {
+            System.out.println();
+            System.out.println("Please choose an option");
+            System.out.println("------------------------------");
+            System.out.println("0. Exit");
+            System.out.println("1. Remove a Follow");
+            System.out.println("2. Add a Follow");
+            System.out.println("------------------------------");
+            choice = sc.nextInt();
+
+            switch (choice)
+            {
+                case 0 : close=true; break;
+                case 1 : network.hasUser(name); break;
+                case 2 : network.addUser(name); break;
+                case 3 : network.removeUser(name); break;
+                default : System.out.println("Invalid menu option");
+            }
+
+        } while(close != true);
     }
 
     public FollowNetwork loadNetwork()

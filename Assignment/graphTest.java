@@ -16,6 +16,7 @@ public class graphTest
         gr.displayAsMatrix();
         gr.depthFirstSearch();
         gr.breadthFirstSearch();
+        gr.deleteNode("A");
     }
 
     private static void readFile(DSAGraph gr, String inFilename)
