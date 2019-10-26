@@ -3,10 +3,12 @@ import java.util.*;
 public class FollowNetwork
 {
     private DSAGraph users;
+    private DSALinkedList posts;
 
     public FollowNetwork()
     {
         users = new DSAGraph();
+        posts = new DSALinkedList();
     }
 
     public void addUser(String name)
@@ -14,29 +16,6 @@ public class FollowNetwork
         UserData userData = new UserData(name);
 
         users.addVertex(name, userData);
-    }
-
-    public void printPost()
-    {
-        DSALinkedList userList = users.getVertices();
-        DSALinkedList posts;
-        Iterator iter = userList.iterator();
-        Iterator iterP;
-        UserData curr;
-        PostClass currPost;
-
-        while (iter.hasNext())
-        {
-            curr = (UserData)iter.next();
-            System.out.println("uname:" + curr.name);
-            posts = curr.posts;
-            iterP = posts.iterator();
-            while (iter.hasNext())
-            {
-                currPost = (PostClass)iter.next();
-                System.out.println("post:" + currPost.post);
-            }
-        }
     }
 
     public void addFollow(String following, String follower)
@@ -49,6 +28,19 @@ public class FollowNetwork
             users.setNodeValue(follower, user);
         }
         users.addEdge(following, follower);
+    }
+
+    public void addPost(String inPost, String name)
+    {
+        if(users.hasVertex(name))
+        {
+            PostClass post = new PostClass(inPost, name);
+            posts.insertLast(post);
+        }
+        else
+        {
+            System.out.println("User not Found!");
+        }
     }
 
     public void removeFollow(String following, String follower)
@@ -66,17 +58,6 @@ public class FollowNetwork
         users.deleteNode(name);
     }
 
-    public void addPost(String name, String post)
-    {
-        UserData user = null;
-        user = (UserData)users.getNodeValue(name);
-        if(user != null)
-        {
-            user.addPost(post);
-            users.setNodeValue(name, user);
-        }
-    }
-
     public void displayNetworkList()
     {
         users.displayAsList();
@@ -91,7 +72,7 @@ public class FollowNetwork
             System.out.println();
             System.out.println("------------------------------");
             System.out.println("Name: " + name);
-            System.out.println("\tNo of Posts: " + user.posts.getCount());
+            System.out.println("\tNo of Posts: " + posts.getCount());
             System.out.println("\tNo of Followers: " + (users.getAdjacent(name)).getCount());
             System.out.println("\tNo of Following: " + user.following.getCount());
             System.out.println("------------------------------");
@@ -167,35 +148,20 @@ public class FollowNetwork
 
     public void orderByLike()
     {
-        DSALinkedList userList = users.getVertices();
-        DSALinkedList postlist =  new DSALinkedList();
         DSALinkedList usersPosts =  new DSALinkedList();
         DSALinkedList sortedList = new DSALinkedList();
         DSALinkedList tempList = new DSALinkedList();
         PostClass currP, sortedFirst, sortedLast;
         UserData curr;
-        Iterator iter = userList.iterator();
-        Iterator postIt;
+        Iterator iter;
 
-        while (iter.hasNext())
-        {
-            curr = (UserData)iter.next();
-            usersPosts = curr.posts;
-            postIt = usersPosts.iterator();
-            while (postIt.hasNext())
-            {
-                currP = (PostClass)postIt.next();
-                postlist.insertLast(currP);
-            }
-        }
-
-        if(postlist.isEmpty())
+        if(posts.isEmpty())
         {
             System.out.println("No Posts");
         }
         else
         {
-            iter = postlist.iterator();
+            iter = posts.iterator();
             while (iter.hasNext())
             {
                 currP = (PostClass)iter.next();
@@ -233,17 +199,17 @@ public class FollowNetwork
                 }
             }
 
-            postlist = new DSALinkedList();
+            posts = new DSALinkedList();
             iter = sortedList.iterator();
             while (iter.hasNext())
             {
                 currP = (PostClass)iter.next();
-                postlist.insertFirst(currP);
+                posts.insertFirst(currP);
             }
 
             System.out.println();
             System.out.println("------------------------------");
-            iter = postlist.iterator();
+            iter = posts.iterator();
             while (iter.hasNext())
             {
                 currP = (PostClass)iter.next();
@@ -252,24 +218,91 @@ public class FollowNetwork
         }
     }
 
+    public String outputFile()
+    {
+        String output = "";
+        DSALinkedList usersList = users.getVertices();
+        DSALinkedList followersList;
+        UserData currUser;
+        Iterator iter = usersList.iterator();
+        Iterator iterFollowers;
+        String follower;
+
+        while (iter.hasNext())
+        {
+            currUser = (UserData)iter.next();
+            output += currUser.name + "\n";
+        }
+
+        iter = usersList.iterator();
+        while (iter.hasNext())
+        {
+            currUser = (UserData)iter.next();
+            followersList = users.getAdjacent(currUser.name);
+            iterFollowers = followersList.iterator();
+            while (iterFollowers.hasNext())
+            {
+                follower = (String)iterFollowers.next();
+                output += currUser.name + ":" + follower + "\n";
+            }
+        }
+
+        return output;
+    }
+
+    public void timeStep(double likeProb, double followProb)
+    {
+        DSALinkedList adjacentVertices;
+        Iterator iter = posts.iterator();
+        Iterator iter2;
+        DSAQueue showPost = new DSAQueue();
+        DSAQueue showNext;
+        PostClass curr;
+        UserData currUser;
+
+        while (iter.hasNext())
+        {
+            curr = (PostClass)iter.next();
+            for(int ii=0; ii<= curr.time; ii++)
+            {
+                if(ii == 0)
+                {
+                    adjacentVertices = users.getAdjacent(curr.poster);
+                    showPost = new DSAQueue();
+                    while(!adjacentVertices.isEmpty())
+                    {
+                        currUser = (UserData)adjacentVertices.removeFirst();
+                        iter2 = curr.seenBy.iterator();
+                        while(iter2.hasNext())
+                        {
+                            currUser = (UserData)iter.next();
+
+                            showPost.enqueue(adjacentVertices.removeFirst());
+                        }
+                        showPost.enqueue();
+                    }
+                }
+
+
+            }
+        }
+    }
+
     private class UserData
     {
         private String name;
         private DSALinkedList following;
-        private DSALinkedList posts;
 
         public UserData()
         {
             name = "";
             following = new DSALinkedList();
-            posts = new DSALinkedList();
         }
 
         public UserData(String inName)
         {
             name = inName;
             following = new DSALinkedList();
-            posts = new DSALinkedList();
         }
 
         public void addFollowing(String name)
@@ -277,24 +310,59 @@ public class FollowNetwork
             following.insertLast(name);
         }
 
-        public void addPost(String inPost)
-        {
-            PostClass post = new PostClass(inPost, name);
-            posts.insertLast(post);
-        }
     }
 
     private class PostClass
     {
         private String post;
         private String poster;
+        private DSALinkedList likedBy;
+        private DSALinkedList seenBy;
         private int likeNum;
+        private int time;
 
         public PostClass(String inPost, String inPoster)
         {
             post = inPost;
             poster = inPoster;
+            likedBy = new DSALinkedList();
+            seenBy = new DSALinkedList();
             likeNum = 0;
+            time = 0;
+        }
+
+        public boolean hasLiked(String user)
+        {
+            Boolean liked = false;
+            String currUser;
+
+            Iterator iter = likedBy.iterator();
+            while (iter.hasNext())
+            {
+                currUser = (String)iter.next();
+                if(currUser.equals(user))
+                {
+                    liked = true;
+                }
+            }
+            return liked;
+        }
+
+        public boolean hasSeen(String user)
+        {
+            Boolean seen = false;
+            String currUser;
+
+            Iterator iter = seenBy.iterator();
+            while (iter.hasNext())
+            {
+                currUser = (String)iter.next();
+                if(currUser.equals(user))
+                {
+                    seen = true;
+                }
+            }
+            return seen;
         }
     }
 }

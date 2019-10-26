@@ -200,7 +200,7 @@ public class InteractiveMode
             switch (choice)
             {
                 case 0 : close=true; break;
-                case 1 : network.addPost(user, post); break;
+                case 1 : network.addPost(post, user); break;
                 default : System.out.println(ERRCLR + "Invalid menu option" + CLR);
             }
 
