@@ -34,7 +34,7 @@ public class DSAGraph
         if(hasVertex(label1) && hasVertex(label2))
         {
             Iterator iter = vertices.iterator();
-            while (iter.hasNext())
+            while (iter.hasNext())follower
             {
                 curr = (DSAGraphVertex)iter.next();
                 if((curr.getLabel()).equals(label1))

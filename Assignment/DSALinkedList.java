@@ -81,6 +81,11 @@ public class DSALinkedList implements Iterable, Serializable
         return nodeValue;
     }
 
+    public int getCount()
+    {
+        return count;
+    }
+
     public Object removeFirst()
     {
         Object nodeValue = null;
