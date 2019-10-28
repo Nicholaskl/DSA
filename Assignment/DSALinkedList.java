@@ -1,3 +1,16 @@
+/*
+ * File: DSALinkedList.java
+ * File Created: Thursday, 5th September 2019
+ * Author: Nicholas Klvana-Hooper
+ * -----
+ * Last Modified: Tuesday, 29th October 2019
+ * Modified By: Nicholas Klvana-Hooper
+ * -----
+ * Purpose: Contains functions for a linked list data structure
+  * Reference: A modified version of the Linked list used from Prac_03 made by Nicholas
+  *            Klvana-Hooper(me) from 21/08/19. (Accessed on the 30th of September, 2019)
+  *            based on Lecture 03 - linked list lecture slides (Accessed on the 5th of September, 2019)
+  */
 import java.util.*;
 import java.io.*;
 
@@ -7,6 +20,12 @@ public class DSALinkedList implements Iterable, Serializable
     protected DSAListNode tail;
     private int count;
 
+    /*
+    * SUBMODULE: DSALinkedList
+    * IMPORT:
+    * EXPORT:
+    * ASSERTION: default constructor for DSALinkedList class
+    */
     public DSALinkedList()
     {
         head = null;
@@ -14,10 +33,16 @@ public class DSALinkedList implements Iterable, Serializable
         count = 0;
     }
 
+    /*
+    * SUBMODULE: insertFirst
+    * IMPORT: newValue(Object)
+    * EXPORT:
+    * ASSERTION: adds a node to the front of the list
+    */
     public void insertFirst(Object newValue)
     {
         DSAListNode newNd = new DSAListNode(newValue);
-        if(isEmpty())
+        if(isEmpty()) //if the list is empty, tail and head is the new node
         {
             head = newNd;
             tail = newNd;
@@ -31,10 +56,16 @@ public class DSALinkedList implements Iterable, Serializable
         count++;
     }
 
+    /*
+    * SUBMODULE: insertLast
+    * IMPORT: newValue(Object)
+    * EXPORT:
+    * ASSERTION: adds a ndoe to the end of the list
+    */
     public void insertLast(Object newValue)
     {
         DSAListNode newNd = new DSAListNode(newValue);
-        if(isEmpty())
+        if(isEmpty()) //if the list is empty, tail and head is the new node
         {
             head = newNd;
             tail = newNd;
@@ -53,12 +84,18 @@ public class DSALinkedList implements Iterable, Serializable
         return (head == null);
     }
 
+    /*
+    * SUBMODULE: peekFirst
+    * IMPORT:
+    * EXPORT: nodeValue(Object)
+    * ASSERTION: returns value of the first node
+    */
     public Object peekFirst()
     {
         Object nodeValue = null;
         if(isEmpty())
         {
-            throw new IllegalArgumentException("Nothing to peek.List is empty");
+            throw new IllegalArgumentException("Nothing to peek. List is empty");
         }
         else
         {
@@ -67,12 +104,18 @@ public class DSALinkedList implements Iterable, Serializable
         return nodeValue;
     }
 
+    /*
+    * SUBMODULE: peekLast
+    * IMPORT:
+    * EXPORT: nodeValue(Object)
+    * ASSERTION: returns value of the last node
+    */
     public Object peekLast()
     {
         Object nodeValue = null;
         if(isEmpty())
         {
-            throw new IllegalArgumentException("Nothing to peek.List isempty");
+            throw new IllegalArgumentException("Nothing to peek. List is empty");
         }
         else
         {
@@ -86,6 +129,12 @@ public class DSALinkedList implements Iterable, Serializable
         return count;
     }
 
+    /*
+    * SUBMODULE: removeFirst
+    * IMPORT:
+    * EXPORT: nodeValue(Object)
+    * ASSERTION: removes the first node from the list
+    */
     public Object removeFirst()
     {
         Object nodeValue = null;
@@ -98,7 +147,7 @@ public class DSALinkedList implements Iterable, Serializable
             nodeValue = head.getValue();
             head = null;
             tail = null;
-            count--;
+            count--; //one less node now
         }
         else
         {
@@ -106,10 +155,16 @@ public class DSALinkedList implements Iterable, Serializable
             head = head.getNext();
             head.setPrev(null);
             count--;
-        }
+        } //one less node now
         return nodeValue;
     }
 
+    /*
+    * SUBMODULE: removeLast
+    * IMPORT:
+    * EXPORT: nodeValue(Object)
+    * ASSERTION: removes the last node from the list
+    */
     public Object removeLast()
     {
         Object nodeValue = null;
@@ -128,6 +183,12 @@ public class DSALinkedList implements Iterable, Serializable
         return nodeValue;
     }
 
+    /*
+    * SUBMODULE: remove
+    * IMPORT: idx(int)
+    * EXPORT: void
+    * ASSERTION: removes the node at the index given
+    */
     public void remove(int idx)
     {
         DSAListNode currNd;
@@ -138,11 +199,11 @@ public class DSALinkedList implements Iterable, Serializable
         {
             throw new IllegalArgumentException("Can't remove from empty list");
         }
-        else if(idx == 0)
+        else if(idx == 0) //if beginning of list, just remove first
         {
             removeFirst();
         }
-        else if(idx == count-1)
+        else if(idx == count-1) //if end of list, remove the last
         {
             removeLast();
         }
@@ -150,7 +211,7 @@ public class DSALinkedList implements Iterable, Serializable
         {
             currNd = head;
 
-            for(int ii = 0; ii < idx; ii++)
+            for(int ii = 0; ii < idx; ii++) //continue traversing until node needed is gotten
             {
                 currNd = currNd.next;
             }
@@ -173,6 +234,7 @@ public class DSALinkedList implements Iterable, Serializable
         }
     }
 
+
     public Iterator iterator()
     {
         return new DSALinkedListIterator(this);
@@ -185,6 +247,12 @@ public class DSALinkedList implements Iterable, Serializable
         private DSAListNode next;
         private DSAListNode prev;
 
+        /*
+        * SUBMODULE: DSAListNode
+        * IMPORT: inValue(Object)
+        * EXPORT:
+        * ASSERTION: Alternate constructor for DSAListNode class
+        */
         public DSAListNode(Object inValue)
         {
             value = inValue;
@@ -227,6 +295,12 @@ public class DSALinkedList implements Iterable, Serializable
     {
         private DSAListNode iterNext;
 
+        /*
+        * SUBMODULE: DSALinkedListIterator
+        * IMPORT: theList(DSALinkedList)
+        * EXPORT:
+        * ASSERTION: Alternate constructor for the iterator class
+        */
         public DSALinkedListIterator(DSALinkedList theList)
         {
             iterNext = theList.head;
@@ -237,6 +311,12 @@ public class DSALinkedList implements Iterable, Serializable
             return(iterNext != null);
         }
 
+        /*
+        * SUBMODULE: next
+        * IMPORT:
+        * EXPORT: value(Object)
+        * ASSERTION: returns the next node in list
+        */
         public Object next()
         {
             Object value;
