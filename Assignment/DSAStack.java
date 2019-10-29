@@ -28,20 +28,34 @@ public class DSAStack implements Iterable
         list = new DSALinkedList();
     }
 
-    //ACCESSOR
+    /*
+    * SUBMODULE: isEmpty
+    * IMPORT:
+    * EXPORT: isEmpty(boolean)
+    * ASSERTION: returns whether stack is Empty
+    */
     public boolean isEmpty()
     {
         return (list.peekFirst()==null);
     }
 
-
-    //MUTATOR fix value??
+    /*
+    * SUBMODULE: push
+    * IMPORT: value(Object)
+    * EXPORT:
+    * ASSERTION: Adds value to the top of the stack
+    */
     public void push(Object value)
     {
         list.insertFirst(value);
     }
 
-    //MUTATOR fix topVAL return type!
+    /*
+    * SUBMODULE: pop
+    * IMPORT:
+    * EXPORT: topVal(Object)
+    * ASSERTION: returns and removes the value at the top of the stack
+    */
     public Object pop()
     {
         Object topVal;
@@ -50,7 +64,12 @@ public class DSAStack implements Iterable
         return topVal;
     }
 
-    //ACCESSOR fix topVAL return TYPE!
+    /*
+    * SUBMODULE: top
+    * IMPORT:
+    * EXPORT: topVal(Object)
+    * ASSERTION: returns but doesn't remove the value at the top of the stack
+    */
     public Object top()
     {
         Object topVal;

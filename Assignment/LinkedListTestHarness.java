@@ -1,12 +1,14 @@
 /*
  * File: LinkedListTestHarness.java
- * File Created: Monday, 30th September 2019
+ * File Created: Thursday, 5th September 2019
  * Author: Nicholas Klvana-Hooper
  * -----
  * Last Modified: Tuesday, 29th October 2019
  * Modified By: Nicholas Klvana-Hooper
  * -----
- * Purpose: Test file for the Graph data structure
+ * Purpose: Test file for the LinkedList data structure
+ * Reference: Modified version of the test harness made by Nicholas Klvana-Hooper (me)
+ *            for Prac_03 from 21/08/19. (Accessed on the 30th of September, 2019)
  */
 import java.util.*;
 
