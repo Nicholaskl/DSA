@@ -1,0 +1,30 @@
+Nicholas.Klvana-Hooper DSA Assignment Readme
+
+Date created: 29/10/2019
+
+Date last modified: 30/10/2019
+
+Purpose: A DSA Assignemnt for sem 2 2019 that is a simulation for a socical network with users and posts, exploring how information propagates through a social Network
+         and seeing the effects that the posters followers has on the propagation of the information.
+
+How to Run: "java SocialSim -i" for interactive mode which has the features of the program
+            "java SocialSim -s <NetworkFileName> <EventFileName> <ProbabilityForLike> <ProbabilityForFollow>"
+
+Files in project: DSAGraph.java, DSALinkedList.java, DSAQueue.java, DSAStack.java, FollowNetwork.java, interactiveMode.java, SimulationMode.java, SocialSim.java
+
+Test Files: GraphTestHarness.java, LinkedListTestHarness.java, QueueTestHarness.java, StackTestHarness.java
+            other test files include prac6_2.al which is a file read in GraphTestHarness that is from Prac05 accessed on Monday, 30th September 2019
+            test1EF, test1NW, test2NW, test3NW and test4NW are test files to be read by simulation mode. These files were used in the report
+
+Other files: InvestigationReport.pdf and ProgramDocuments.pdf are the two files with the report and other program documentation
+             DeclarationOfOriginality_v1.1.pdf is the signed pdf for the assigment
+
+TODO: None
+
+Known bugs
+	bug#_<number>: <what bug is it (faults in the program)>
+    How to replicate: <How can someone else cause the same bug, you may reference the failed test case is applicable or just provide instructions>
+    [suspected] cause: <what is the cause (or what do you think is the cause). This is optional and omitted if you have not started isolating the issue.>
+    how to fix: <how you think the bug could be fixed>
+
+    Additional functionality: <Things that the program can do that is outside of the scope. i.e.: the bells and whistles>

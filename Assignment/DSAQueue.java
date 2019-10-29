@@ -17,11 +17,6 @@ public class DSAQueue implements Iterable
 {
     protected DSALinkedList list;
 
-    public Iterator iterator()
-    {
-        return list.iterator();
-    }
-
     /*
     * SUBMODULE: DSAQueue
     * IMPORT:
@@ -81,5 +76,16 @@ public class DSAQueue implements Iterable
             bottomVal = list.peekFirst();
         }
         return bottomVal;
+    }
+
+    /*
+    * SUBMODULE: iterator
+    * IMPORT:
+    * EXPORT: Iterator
+    * ASSERTION: Returns the iterator for the queue
+    */
+    public Iterator iterator()
+    {
+        return list.iterator();
     }
 }

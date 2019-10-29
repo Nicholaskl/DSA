@@ -3,7 +3,7 @@
  * File Created: Monday, 28th October 2019
  * Author: Nicholas Klvana-Hooper
  * -----
- * Last Modified: Tuesday, 29th October 2019
+ * Last Modified: Wednesday, 30th October 2019
  * Modified By: Nicholas Klvana-Hooper
  * -----
  * Purpose: Runs the simulation mode of the program that steps through at users request
@@ -38,16 +38,18 @@ public class SimulationMode
         //Sets all of the data to what was inputted in command line
         String netFileName = args[1];
         String eventFileName = args[2];
-        double followProb = Double.valueOf(args[3]);
         double likeProb = Double.valueOf(args[4]);
+        double followProb = Double.valueOf(args[3]);
 
         int choice = -1;
         boolean exit = false;
         int time = 0;
         Scanner sc = new Scanner(System.in);
 
+
         readFile(network, netFileName); //reads the Network File
         readFile(network, eventFileName); //reads the Event File
+        writeTimeStep(likeProb, followProb, time, eventFileName);
         do //Keeps simulation going until user asks to exit
         {
             System.out.println();

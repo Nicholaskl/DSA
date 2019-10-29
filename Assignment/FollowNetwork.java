@@ -3,7 +3,7 @@
  * File Created: Sunday, 27th October 2019
  * Author: Nicholas Klvana-Hooper
  * -----
- * Last Modified: Tuesday, 29th October 2019
+ * Last Modified: Wednesday, 30th October 2019
  * Modified By: Nicholas Klvana-Hooper
  * -----
  * Purpose: Contains the main object class for the Social Network
@@ -54,6 +54,7 @@ public class FollowNetwork
                 curr = (PostClass)iter.next();
                 output += "  Post: " + curr.post + "\n";
                 output += "  Poster: " + curr.poster + "\n";
+                output += "  Seen by: " + curr.seenBy.getCount() + "\n";
                 output += "  Liked By: ";
                 if(curr.likedBy.getCount() == 1) //checks if liked by one user
                 {
@@ -449,6 +450,7 @@ public class FollowNetwork
                                 currLikeP = Math.random();
                                 if(currLikeP <= likeProb) //chance of liking the post
                                 {
+                                    curr.setSeen(currFollower);
                                     curr.setLike(currFollower); //if happens, like the post
                                     currFollowP = Math.random();
                                     if(currFollowP <= followProb) //chance of following
